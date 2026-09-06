@@ -1,0 +1,43 @@
+# ==========================================
+# Global & Provider Configuration
+# ==========================================
+
+# Project name for resource naming and tagging purposes
+project = "webserver"
+
+# The Azure location where all infrastructure will be deployed
+# Ensure your provider configuration is compatible with this region
+location = "australiasoutheast"
+
+# Environment name for resource naming and tagging purposes
+environment = "dev"
+
+# Owner or team responsible for these resources
+owner = "platform-team"
+
+# ==========================================
+# Compute & Virtual Machine Configuration
+# ==========================================
+
+# The username for which the Public SSH Key should be configured
+username = "azure"
+
+# The Public Key which should be used for authentication
+public_key = "~/.ssh/id_ed25519.pub"
+
+# The SKU which should be used for the Virtual Machine
+size = "Standard_B2ats_v2"
+
+# A map of disk configuration defining the type of caching and storage account type
+disk_configuration = {
+  caching              = "ReadWrite"
+  storage_account_type = "Standard_LRS"
+}
+
+# A map of OS image configuration defining the publisher, offer, sku, and version for the Virtual Machines
+os_image = {
+  publisher = "Debian"
+  offer     = "debian-13"
+  sku       = "13-gen2"
+  version   = "latest"
+}
