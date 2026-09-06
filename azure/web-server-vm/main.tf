@@ -102,3 +102,36 @@ resource "azurerm_ssh_public_key" "admin" {
 
   tags = local.default_tags
 }
+
+resource "azurerm_linux_virtual_machine" "linux" {
+  name                            = "vm-${local.prefix}-001"
+  resource_group_name             = azurerm_resource_group.main.name
+  location                        = azurerm_resource_group.main.location
+  size                            = var.size
+  admin_username                  = var.username
+  disable_password_authentication = true
+  custom_data                     = filebase64("./cloud-init.yaml")
+
+  tags = local.default_tags
+
+  network_interface_ids = [
+    azurerm_network_interface.main.id,
+  ]
+
+  admin_ssh_key {
+    username   = var.username
+    public_key = azurerm_ssh_public_key.admin.public_key
+  }
+
+  os_disk {
+    caching              = var.disk_configuration.caching
+    storage_account_type = var.disk_configuration.storage_account_type
+  }
+
+  source_image_reference {
+    publisher = var.os_image.publisher
+    offer     = var.os_image.offer
+    sku       = var.os_image.sku
+    version   = var.os_image.version
+  }
+}
