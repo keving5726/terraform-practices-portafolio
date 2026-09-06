@@ -93,3 +93,12 @@ resource "azurerm_network_interface_security_group_association" "main" {
   network_interface_id      = azurerm_network_interface.main.id
   network_security_group_id = azurerm_network_security_group.ssh.id
 }
+
+resource "azurerm_ssh_public_key" "admin" {
+  name                = "sshkey-${local.prefix}-001"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  public_key          = file("${var.public_key}")
+
+  tags = local.default_tags
+}
